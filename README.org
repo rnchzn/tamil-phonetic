@@ -1,0 +1,80 @@
+* Tamil Phonetic Input for Emacs
+
+** Phonetic Input Method for Tamil
+
+The default key mappings are same as that provided by "/Tamil Phonetic Input Method/" 
+bundled with Debian's "/Multilingual text processing library - database/" (=m17n-db=), specifically version =1.8.0-3=.  
+See following links for more details:
+
+- https://savannah.nongnu.org/projects/m17n :: The m17n library is
+  to support various aspects (e.g. input methods, layout engines)
+  of multi-lingual text processing.
+
+- https://git.savannah.nongnu.org/cgit/m17n/m17n-db.git/plain/MIM/ta-phonetic.mim?h=REL-1-8-0 :: ta-phonetic.mim (v1.8.0)
+
+- https://packages.debian.org/m17n-db :: Multilingual text
+  processing library - database
+
+** Implementations details
+
+Implementation parallels Emacs' in-built =tamil-itrans= input
+method.
+
+** Differences between =ta-phonetic.mim= and this library
+
+- =ta-phonetic.mim= has NO entries for =ௐ=.  This library maps it to
+  keys =AUM= and =OM=, the same sequences of keys used by
+  =tamil-itrans=.
+
+- =ta-phonetic.mim= has NO entries for Tamil decimal digits.  This
+  library (optionally) maps them to latin decimal digits.
+
+- =ta-phonetic.mim= maps character =ஸ்ரீ= to keys =sri=.  That character
+  is apparently composed with individual characters =ஸ்= and =ரீ=.  So,
+  this library provides no additional entries for this character.  So,
+  to input =ஸ்ரீ= with this library use =Srii=.
+
+** Additional Comments
+
+The default mappings installed by =ta-phonetic.mim= (and hence this
+library) are in some instances unintuitive, confusing or contrary
+to what a native speaker would come to expect.  Despite this
+limitation, this library uses the same input keys as
+=ta-phonetic.mim=.  This choice is deliberate.  This allows you to
+easily switch between typing in Emacs' (using this library), and
+typing in Tamil in other apps like LibreOffice (using =m17n-db=).
+
+** User Customization
+
+If you disagree with the default mappings installed by this
+library, you can set up your own mappings by customizing
+=tamil-phonetic-vowels= and =tamil-phonetic-consonants=.
+
+If you would like to input Tamil Decimal Numerals, turn on the
+option =tamil-phonetic-use-tamil-decimal-digits= .
+
+** User Commands for Transliteration
+
+Much like =tamil-itrans=, you can use this library to transliterate
+between English and Tamil using the following commands:
+
+- =M-x tamil-phonetic-transiterate-english->tamil= :: Convert
+  English letters in marked region to Tamil.
+
+- =M-x tamil-phonetic-transiterate-tamil->english= :: Convert Tamil
+  letters in marked region to English.
+
+* Emacs Bugs/RFEs
+
+This library duplicates some code from Emacs' itrans libraries.
+This duplication can be avoided once the issues mentioned in
+https://debbugs.gnu.org/cgi/bugreport.cgi?bug=50143 are addressed.
+
+** TODOs
+
+- Add a =:set= function for all =defcustom= s.
+- Fix byte compilation: The macro =indian-translate-region= evals
+  =tamil-phonetic-hashtable= during compile time.  So, byte
+  compilation of this file will fail.  As a workaround, just load the
+  uncompiled file.  Consider adding an =eval-and-compile= or other
+  equivalent workarounds.
